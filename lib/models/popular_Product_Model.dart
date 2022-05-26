@@ -1,20 +1,21 @@
 import 'dart:convert';
 
-PopularProductModel loginResponseJson(String str) =>
+PopularProductModel popularProductJson(String str) =>
     PopularProductModel.fromJson(json.decode(str));
 
 class PopularProductModel {
   String? msg;
-  List<Payload>? payload;
+  List<PopularModel>? payload;
+  List<PopularModel> get products => payload!;
 
   PopularProductModel({this.msg, this.payload});
 
   PopularProductModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     if (json['payload'] != null) {
-      payload = <Payload>[];
+      payload = <PopularModel>[];
       json['payload'].forEach((v) {
-        payload!.add(Payload.fromJson(v));
+        payload!.add(PopularModel.fromJson(v));
       });
     }
   }
@@ -29,7 +30,7 @@ class PopularProductModel {
   }
 }
 
-class Payload {
+class PopularModel {
   bool? isPopular;
   String? sId;
   String? createdAt;
@@ -44,7 +45,7 @@ class Payload {
   String? location;
   int? typeId;
 
-  Payload(
+  PopularModel(
       {this.isPopular,
       this.sId,
       this.createdAt,
@@ -59,7 +60,7 @@ class Payload {
       this.location,
       this.typeId});
 
-  Payload.fromJson(Map<String, dynamic> json) {
+  PopularModel.fromJson(Map<String, dynamic> json) {
     isPopular = json['is_popular'];
     sId = json['_id'];
     createdAt = json['createdAt'];

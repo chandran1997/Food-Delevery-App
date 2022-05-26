@@ -40,8 +40,10 @@ dependencies:
   http:
   provider:
   shared_preferences: 
-  flushbar:
+  # flushbar:
   api_cache_manager: ^1.0.2
+  sqflite: ^2.0.2+1
+  path_provider:
 
 dev_dependencies:
   flutter_test:

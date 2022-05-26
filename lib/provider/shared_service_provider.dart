@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:food_delevery_app/Screens/auth/singnIn_page.dart';
 import 'package:food_delevery_app/models/auth/login_response_model.dart';
-import 'package:get/get.dart';
+
 
 class SharedServices extends ChangeNotifier {
   Future<bool> isLoggedIn() async {

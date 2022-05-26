@@ -1,26 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:food_delevery_app/Utilis/app_constant.dart';
+import 'package:food_delevery_app/provider/Cart_provider.dart';
+import 'package:provider/provider.dart';
+
+import 'package:food_delevery_app/provider/recommended_Product_Provider.dart';
+
+import '../../provider/popular_Product_Provider.dart';
+import '../carts/cart_page.dart';
 import '/Utilis/colors.dart';
 import '/Utilis/dimensions.dart';
 import '/widgets/app_icon.dart';
 import '/widgets/big_text.dart';
 import '/widgets/expandable_text_widgets.dart';
-import 'package:flutter/material.dart';
 
 class RecommandedFoodDetails extends StatelessWidget {
-  const RecommandedFoodDetails({Key? key}) : super(key: key);
+  int pageId;
+  RecommandedFoodDetails({
+    Key? key,
+    required this.pageId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var recommendedProduct =
+        Provider.of<RecommendedProductProvider>(context, listen: false)
+            .recommendedProductList[pageId];
+    var cartProvider = Provider.of<CartProvider>(context, listen: false);
+
+    Provider.of<PopularProductProvider>(context, listen: false)
+        .initProduct(recommendedProduct, cartProvider);
     return Scaffold(
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.clear),
-                AppIcon(icon: Icons.shopping_cart_outlined),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: AppIcon(icon: Icons.clear),
+                ),
+                Consumer<PopularProductProvider>(
+                    builder: (context, controller, child) {
+                  return Stack(
+                    children: [
+                      AppIcon(icon: Icons.shopping_cart_outlined),
+                      controller.totalItems >= 1
+                          ? Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => const CartPages()));
+                                },
+                                child: AppIcon(
+                                  icon: Icons.circle,
+                                  size: 20,
+                                  iconColor: Colors.transparent,
+                                  backgroundColor: AppColors.maincolor,
+                                ),
+                              ))
+                          : Container(),
+                      controller.totalItems >= 1
+                          ? Positioned(
+                              right: 4,
+                              top: 4,
+                              child: BigText(
+                                text: controller.totalItems.toString(),
+                                size: 12,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  );
+                })
               ],
             ),
             bottom: PreferredSize(
@@ -29,7 +89,7 @@ class RecommandedFoodDetails extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 child: Center(
                   child: BigText(
-                    text: "Chenese Side",
+                    text: recommendedProduct.name!,
                     size: Dimensions.font26,
                   ),
                 ),
@@ -47,7 +107,7 @@ class RecommandedFoodDetails extends StatelessWidget {
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.network(
-                "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?cs=srgb&dl=pexels-lisa-fotios-1279330.jpg&fm=jpg",
+                AppConstants.getImageUrl + recommendedProduct.img!,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
               ),
@@ -60,98 +120,119 @@ class RecommandedFoodDetails extends StatelessWidget {
                 margin: EdgeInsets.only(
                     left: Dimensions.width20, right: Dimensions.width20),
                 child: ExpandableTextWidgets(
-                    text:
-                        " One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes. One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes. One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes. One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes. One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes."),
+                    text: recommendedProduct.description!),
               )
             ],
           )),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.only(
-              left: Dimensions.width20 * 3,
-              right: Dimensions.width20 * 3,
-              top: Dimensions.height10,
-              bottom: Dimensions.height10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppIcon(
-                    iconSize: Dimensions.iconSize24,
-                    iconColor: Colors.white,
-                    backgroundColor: AppColors.maincolor,
-                    icon: Icons.remove),
-                BigText(
-                  text: "\$12.88 " + " X " + " 0 ",
-                  color: AppColors.mainBlackColor,
-                  size: Dimensions.font26,
-                ),
-                AppIcon(
-                    iconSize: Dimensions.iconSize24,
-                    iconColor: Colors.white,
-                    backgroundColor: AppColors.maincolor,
-                    icon: Icons.add),
-              ],
-            ),
-          ),
-          Container(
-            height: Dimensions.bottomHeightBar,
-            padding: EdgeInsets.only(
-              top: Dimensions.height30,
-              bottom: Dimensions.height30,
-              left: Dimensions.width30,
-              right: Dimensions.width30,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.buttonBackgroundColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radius20 * 2),
-                topRight: Radius.circular(Dimensions.radius20 * 2),
+      bottomNavigationBar: Consumer<PopularProductProvider>(
+          builder: (context, controller, child) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                left: Dimensions.width20 * 3,
+                right: Dimensions.width20 * 3,
+                top: Dimensions.height10,
+                bottom: Dimensions.height10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.setQuantity(false);
+                    },
+                    child: AppIcon(
+                        iconSize: Dimensions.iconSize24,
+                        iconColor: Colors.white,
+                        backgroundColor: AppColors.maincolor,
+                        icon: Icons.remove),
+                  ),
+                  BigText(
+                    text: "${recommendedProduct.price} " +
+                        " X " +
+                        " ${controller.inCardItems}",
+                    color: AppColors.mainBlackColor,
+                    size: Dimensions.font26,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.setQuantity(true);
+                    },
+                    child: AppIcon(
+                        iconSize: Dimensions.iconSize24,
+                        iconColor: Colors.white,
+                        backgroundColor: AppColors.maincolor,
+                        icon: Icons.add),
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(
-                      top: Dimensions.height20,
-                      bottom: Dimensions.height20,
-                      left: Dimensions.width30,
-                      right: Dimensions.width30,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radius20),
-                      color: Colors.white,
-                    ),
-                    child: Icon(
-                      Icons.favorite,
-                      color: AppColors.maincolor,
-                    )),
-                Container(
-                  padding: EdgeInsets.only(
-                    top: Dimensions.height20,
-                    bottom: Dimensions.height20,
-                    left: Dimensions.width30,
-                    right: Dimensions.width30,
+            GestureDetector(
+              onTap: () {
+                controller.addItem(recommendedProduct);
+              },
+              child: Container(
+                height: Dimensions.bottomHeightBar,
+                padding: EdgeInsets.only(
+                  top: Dimensions.height30,
+                  bottom: Dimensions.height30,
+                  left: Dimensions.width30,
+                  right: Dimensions.width30,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.buttonBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimensions.radius20 * 2),
+                    topRight: Radius.circular(Dimensions.radius20 * 2),
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius20),
-                    color: AppColors.maincolor,
-                  ),
-                  child: BigText(
-                    text: "\$10 | Add to card",
-                    color: Colors.white,
-                  ),
-                )
-              ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                          top: Dimensions.height20,
+                          bottom: Dimensions.height20,
+                          left: Dimensions.width30,
+                          right: Dimensions.width30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radius20),
+                          color: Colors.white,
+                        ),
+                        child: Icon(
+                          Icons.favorite,
+                          color: AppColors.maincolor,
+                        )),
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: Dimensions.height20,
+                        bottom: Dimensions.height20,
+                        left: Dimensions.width30,
+                        right: Dimensions.width30,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radius20),
+                        color: AppColors.maincolor,
+                      ),
+                      child: BigText(
+                        text: "${recommendedProduct.price} | Add to card",
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 }

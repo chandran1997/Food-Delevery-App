@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../Utilis/colors.dart';
 import '../Utilis/dimensions.dart';
+
 import 'big_text.dart';
 import 'icon_and_text_widget.dart';
 import 'small_text.dart';
 
 class AppColumn extends StatelessWidget {
   final String text;
+
   const AppColumn({
     Key? key,
     required this.text,
@@ -46,6 +48,9 @@ class AppColumn extends StatelessWidget {
               width: 10,
             ),
             SmallText(text: 'comments'),
+            const SizedBox(
+              width: 10,
+            ),
           ],
         ),
         SizedBox(height: Dimensions.height20),

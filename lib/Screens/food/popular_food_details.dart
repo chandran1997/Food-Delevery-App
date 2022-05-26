@@ -1,19 +1,42 @@
+import 'dart:core';
+
+import 'package:flutter/material.dart';
+
+import 'package:food_delevery_app/Utilis/app_constant.dart';
+import 'package:food_delevery_app/provider/Cart_provider.dart';
+import 'package:get/get.dart';
+
+import 'package:provider/provider.dart';
+
+import '../../Utilis/colors.dart';
+import '../../provider/popular_Product_Provider.dart';
+import '../../widgets/app_column.dart';
+import '../../widgets/big_text.dart';
+import '../carts/cart_page.dart';
 import '/Utilis/dimensions.dart';
 import '/widgets/app_icon.dart';
 import '/widgets/expandable_text_widgets.dart';
-import 'package:flutter/material.dart';
 
-import '../../Utilis/colors.dart';
-import '../../widgets/app_column.dart';
-import '../../widgets/big_text.dart';
-
-class PopularFoodDetails extends StatelessWidget {
-  const PopularFoodDetails({Key? key}) : super(key: key);
+class PopularFoodDetails extends StatefulWidget {
+  int pageId;
+  PopularFoodDetails({
+    Key? key,
+    required this.pageId,
+  }) : super(key: key);
 
   @override
+  State<PopularFoodDetails> createState() => _PopularFoodDetailsState();
+}
+
+class _PopularFoodDetailsState extends State<PopularFoodDetails> {
+  @override
   Widget build(BuildContext context) {
-    // print('height +${MediaQuery.of(context).size.height}');
-    // print('width +${MediaQuery.of(context).size.width}');
+    var product = Provider.of<PopularProductProvider>(context, listen: false)
+        .popularProductList[widget.pageId];
+    var cartProvider = Provider.of<CartProvider>(context, listen: false);
+    Provider.of<PopularProductProvider>(context, listen: false)
+        .initProduct(product, cartProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -25,10 +48,10 @@ class PopularFoodDetails extends StatelessWidget {
             child: Container(
               width: double.maxFinite, //its take all the available space
               height: Dimensions.popularFoodImgSize,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(
-                        "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?cs=srgb&dl=pexels-lisa-fotios-1279330.jpg&fm=jpg"),
+                        "${AppConstants.getImageUrl + product.img!}"),
                     fit: BoxFit.cover),
               ),
             ),
@@ -41,8 +64,47 @@ class PopularFoodDetails extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.arrow_back_ios),
-                AppIcon(icon: Icons.shopping_cart_outlined),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: AppIcon(icon: Icons.arrow_back_ios),
+                ),
+                Consumer<PopularProductProvider>(builder: (context, controller, child) {
+                  return Stack(
+                    children: [
+                      AppIcon(icon: Icons.shopping_cart_outlined),
+                      controller.totalItems >= 1
+                          ? Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => const CartPages()));
+                                },
+                                child: AppIcon(
+                                  icon: Icons.circle,
+                                  size: 20,
+                                  iconColor: Colors.transparent,
+                                  backgroundColor: AppColors.maincolor,
+                                ),
+                              ))
+                          : Container(),
+                      controller.totalItems >= 1
+                          ? Positioned(
+                              right: 4,
+                              top: 4,
+                              child: BigText(
+                                text: controller.totalItems.toString(),
+                                size: 12,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  );
+                })
               ],
             ),
           ),
@@ -66,8 +128,8 @@ class PopularFoodDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppColumn(
-                    text: 'Chinese Side',
+                  AppColumn(
+                    text: "${product.name!}",
                   ),
                   SizedBox(
                     height: Dimensions.height20,
@@ -77,12 +139,11 @@ class PopularFoodDetails extends StatelessWidget {
                     height: Dimensions.height20,
                   ),
                   //Expandable text widgets
-                  const Expanded(
+                  Expanded(
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
                       child: ExpandableTextWidgets(
-                          text:
-                              "One method of preparing chow mein noodles is to fry them separately into a “noodle pancake” and then pour the stir-fried meat and vegetables over the fried noodles. The chow mein noodles can also be stir-fried with meat/poultry and vegetables.With lo mein, the parboiled noodles are frequently added near the end of cooking to heat through and toss with the other ingredients and sauce. Alternately, the parboiled noodles may be tossed with a sauce and the stir-fried ingredients poured over.Since the real star of any lo mein dish is the sauce, it's not surprising that lo mein recipes often use more sauce than chow mein recipes."),
+                          text: product.description!.toString()),
                     ),
                   )
                 ],
@@ -91,73 +152,94 @@ class PopularFoodDetails extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: Container(
-        height: Dimensions.bottomHeightBar,
-        padding: EdgeInsets.only(
-          top: Dimensions.height30,
-          bottom: Dimensions.height30,
-          left: Dimensions.width30,
-          right: Dimensions.width30,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.buttonBackgroundColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20 * 2),
-            topRight: Radius.circular(Dimensions.radius20 * 2),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                top: Dimensions.height20,
-                bottom: Dimensions.height20,
-                left: Dimensions.width30,
-                right: Dimensions.width30,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: Colors.white,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.remove,
-                    color: AppColors.appsignColor,
-                  ),
-                  SizedBox(
-                    width: Dimensions.width10 / 2,
-                  ),
-                  BigText(text: "0"),
-                  SizedBox(
-                    width: Dimensions.width10 / 2,
-                  ),
-                  Icon(
-                    Icons.add,
-                    color: AppColors.appsignColor,
-                  )
-                ],
+      bottomNavigationBar: Consumer<PopularProductProvider>(
+        builder: (context, popularProduct, child) {
+          return Container(
+            height: Dimensions.bottomHeightBar,
+            padding: EdgeInsets.only(
+              top: Dimensions.height30,
+              bottom: Dimensions.height30,
+              left: Dimensions.width30,
+              right: Dimensions.width30,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.buttonBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimensions.radius20 * 2),
+                topRight: Radius.circular(Dimensions.radius20 * 2),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(
-                top: Dimensions.height20,
-                bottom: Dimensions.height20,
-                left: Dimensions.width30,
-                right: Dimensions.width30,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: AppColors.maincolor,
-              ),
-              child: BigText(
-                text: "\$10 | Add to card",
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                    top: Dimensions.height20,
+                    bottom: Dimensions.height20,
+                    left: Dimensions.width30,
+                    right: Dimensions.width30,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          popularProduct.setQuantity(false);
+                        },
+                        child: Icon(
+                          Icons.remove,
+                          color: AppColors.appsignColor,
+                        ),
+                      ),
+                      SizedBox(
+                        width: Dimensions.width10 / 2,
+                      ),
+                      BigText(
+                        text: popularProduct.inCardItems.toString(),
+                      ),
+                      SizedBox(
+                        width: Dimensions.width10 / 2,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          popularProduct.setQuantity(true);
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: AppColors.appsignColor,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    popularProduct.addItem(product);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: Dimensions.height20,
+                      bottom: Dimensions.height20,
+                      left: Dimensions.width30,
+                      right: Dimensions.width30,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius20),
+                      color: AppColors.maincolor,
+                    ),
+                    child: BigText(
+                      text: "${product.price!} | Add to card",
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

@@ -69,7 +69,9 @@ class _SignUpPageState extends State<SignUpPage> {
           .hasMatch(email);
       passwordValid = RegExp('^[A-Z]+[a-z]+[@][0-9]{1,}').hasMatch(password);
 
-      if (email.isEmpty) {
+      if (name.isEmpty) {
+        showCustomSnackBar("Type in your Name", title: "UserName");
+      } else if (email.isEmpty) {
         showCustomSnackBar("Type in your email address",
             title: "Email address");
       } else if (emailValid == false) {
@@ -87,9 +89,6 @@ class _SignUpPageState extends State<SignUpPage> {
         showCustomSnackBar(
             "Required starting capital letter, special character, one number",
             title: "Invalid Pasword");
-      }
-      if (name.isEmpty) {
-        showCustomSnackBar("Type in your name", title: "name");
       } else {
         // showCustomSnackBar("All went well", title: "Perfect");
         RegisterRequestModel model = RegisterRequestModel(

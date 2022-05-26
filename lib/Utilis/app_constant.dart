@@ -17,4 +17,7 @@ class AppConstants {
   static const String register = "/api/auth/register";
   static const String forgetPassword = "/reset_password";
   static const String userProfileAPI = "/api/user/myAccount/";
+  static const String getProduct = "/api/product";
+  static const String getRecommendedProduct = "/api/product/recommended";
+  static const String getImageUrl = "http://mvs.bslmeiyu.com/uploads/";
 }
