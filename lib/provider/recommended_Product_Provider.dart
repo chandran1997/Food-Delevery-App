@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 import '../models/popular_Product_Model.dart';
 
-
 class RecommendedProductProvider extends ChangeNotifier {
   static var client = http.Client();
 
@@ -27,10 +26,6 @@ class RecommendedProductProvider extends ChangeNotifier {
       url,
       headers: requestHeaders,
     );
-
-    // var response = await http.get(
-    //     Uri.parse('https://e-commerce-node-deploy.herokuapp.comapi/product/recommended'));
-
     if (response.statusCode == 200) {
       // print("got product");
       _recommendedProductList = [];

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:food_delevery_app/Utilis/colors.dart';
 import 'package:food_delevery_app/Utilis/dimensions.dart';
+import 'package:food_delevery_app/base/custom_loader.dart';
 import 'package:food_delevery_app/base/show_custom_snackBar.dart';
 import 'package:food_delevery_app/models/auth/register_request_model.dart';
 
@@ -115,152 +116,147 @@ class _SignUpPageState extends State<SignUpPage> {
         });
       }
     }
-    // else if (phone.isEmpty) {
-    //     showCustomSnackBar("Type in your Phone number", title: "Phone number");
-    //   }
+   
 
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: Dimensions.screenHeight * 0.05,
-            ),
+        body: SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          SizedBox(
+            height: Dimensions.screenHeight * 0.05,
+          ),
 
-            //app logo
-            Container(
-              height: Dimensions.screenHeight * 0.25,
-              child: const Center(
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 80,
-                  backgroundImage: AssetImage("assets/signIn.jpg"),
-                ),
+          //app logo
+          Container(
+            height: Dimensions.screenHeight * 0.25,
+            child: const Center(
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 80,
+                backgroundImage: AssetImage("assets/signIn.jpg"),
               ),
             ),
+          ),
 
-            //your name,
-            AppTextField(
-              textEditingController: nameController,
-              hintText: "Name",
-              icon: Icons.person,
-            ),
-            SizedBox(height: Dimensions.height20),
+          //your name,
+          AppTextField(
+            textEditingController: nameController,
+            hintText: "Name",
+            icon: Icons.person,
+          ),
+          SizedBox(height: Dimensions.height20),
 
-            //your email
-            AppTextField(
-              textEditingController: emailController,
-              hintText: "Email",
-              icon: Icons.email,
-            ),
-            SizedBox(height: Dimensions.height20),
+          //your email
+          AppTextField(
+            textEditingController: emailController,
+            hintText: "Email",
+            icon: Icons.email,
+          ),
+          SizedBox(height: Dimensions.height20),
 
-            //your password
-            AppTextField(
-              textEditingController: passwordController,
-              hintText: "Password",
-              icon: Icons.lock,
-            ),
-            SizedBox(height: Dimensions.height20),
+          //your password
+          AppTextField(
+            textEditingController: passwordController,
+            hintText: "Password",
+            icon: Icons.lock,
+          ),
+          SizedBox(height: Dimensions.height20),
 
-            AppTextField(
-              textEditingController: confirmpasswordController,
-              hintText: "Confirm Password",
-              icon: Icons.lock,
-            ),
-            SizedBox(height: Dimensions.height20),
+          AppTextField(
+            textEditingController: confirmpasswordController,
+            hintText: "Confirm Password",
+            icon: Icons.lock,
+          ),
+          SizedBox(height: Dimensions.height20),
 
-            //your phone
-            // AppTextField(
-            //   textEditingController: phoneController,
-            //   hintText: "Phone",
-            //   icon: Icons.phone,
-            // ),
+          //your phone
+          // AppTextField(
+          //   textEditingController: phoneController,
+          //   hintText: "Phone",
+          //   icon: Icons.phone,
+          // ),
 
-            SizedBox(height: Dimensions.height20),
+          SizedBox(height: Dimensions.height20),
 
-            GestureDetector(
-              onTap: () {
-                _registration();
-              },
-              child: valid
-                  ? Container(
-                      width: Dimensions.screenHeight / 4,
-                      height: Dimensions.screenHeight / 13,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radius30),
-                        color: AppColors.maincolor,
-                      ),
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: AppColors.maincolor,
-                      )),
-                    )
-                  : Container(
-                      width: Dimensions.screenHeight / 4,
-                      height: Dimensions.screenHeight / 13,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radius30),
-                        color: AppColors.maincolor,
-                      ),
-                      child: Center(
-                        child: BigText(
-                          text: "Sign Up",
-                          size: Dimensions.font20 + Dimensions.font20 / 2,
-                          color: Colors.white,
-                        ),
+          GestureDetector(
+            onTap: () {
+              _registration();
+            },
+            child: valid
+                ? Container(
+                    width: Dimensions.screenHeight / 4,
+                    height: Dimensions.screenHeight / 13,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius30),
+                      color: AppColors.maincolor,
+                    ),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: AppColors.maincolor,
+                    )),
+                  )
+                : Container(
+                    width: Dimensions.screenHeight / 4,
+                    height: Dimensions.screenHeight / 13,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius30),
+                      color: AppColors.maincolor,
+                    ),
+                    child: Center(
+                      child: BigText(
+                        text: "Sign Up",
+                        size: Dimensions.font20 + Dimensions.font20 / 2,
+                        color: Colors.white,
                       ),
                     ),
-            ),
+                  ),
+          ),
 
-            SizedBox(height: Dimensions.height10),
+          SizedBox(height: Dimensions.height10),
 
-            //sign Up button
-            RichText(
-              text: TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SignInPage())),
-                text: "Have an account already?",
-                style: TextStyle(
-                  color: Colors.grey[500],
-                  fontSize: Dimensions.font20,
-                ),
+          //sign Up button
+          RichText(
+            text: TextSpan(
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SignInPage())),
+              text: "Have an account already?",
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontSize: Dimensions.font20,
               ),
             ),
+          ),
 
-            SizedBox(height: Dimensions.screenHeight * 0.05),
+          SizedBox(height: Dimensions.screenHeight * 0.05),
 
-            //sign Up option
-            RichText(
-              text: TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = () {},
-                text: "Sign up using one of the following methods ",
-                style: TextStyle(
-                  color: Colors.grey[500],
-                  fontSize: Dimensions.font16,
-                ),
+          //sign Up option
+          RichText(
+            text: TextSpan(
+              recognizer: TapGestureRecognizer()..onTap = () {},
+              text: "Sign up using one of the following methods ",
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontSize: Dimensions.font16,
               ),
             ),
+          ),
 
-            // Wrap(
-            //   children: List.generate(3, (index) {
-            //     return Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: CircleAvatar(
-            //         backgroundColor: Colors.white,
-            //         radius: Dimensions.radius30,
-            //         backgroundImage: AssetImage(signUpImages[index]),
-            //       ),
-            //     );
-            //   }),
-            // ),
-          ],
-        ),
+          // Wrap(
+          //   children: List.generate(3, (index) {
+          //     return Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: CircleAvatar(
+          //         backgroundColor: Colors.white,
+          //         radius: Dimensions.radius30,
+          //         backgroundImage: AssetImage(signUpImages[index]),
+          //       ),
+          //     );
+          //   }),
+          // ),
+        ],
       ),
-    );
+    ));
   }
 }

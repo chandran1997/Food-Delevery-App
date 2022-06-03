@@ -38,9 +38,6 @@ class PopularProductProvider extends ChangeNotifier {
       url,
       headers: requestHeaders,
     );
-    // var response = await http.get(
-    //     Uri.parse('https://e-commerce-node-deploy.herokuapp.comapi/product'));
-
     if (response.statusCode == 200) {
       // print("got product");
       _popularProductList = [];

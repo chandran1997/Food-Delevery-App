@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:food_delevery_app/Screens/food/popular_food_details.dart';
 import 'package:food_delevery_app/Screens/food/recommanded_food_details.dart';
 import 'package:food_delevery_app/Utilis/app_constant.dart';
 import 'package:food_delevery_app/models/popular_Product_Model.dart';
-import 'package:get/get.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../provider/popular_Product_Provider.dart';

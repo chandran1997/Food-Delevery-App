@@ -32,15 +32,17 @@ class CartModel {
     product = PopularModel.fromJson(json['product']);
   }
 
-  // Map<String, Object?> toMap() {
-  //   return {
-  //     "id": id,
-  //     "name": name,
-  //     "price": price,
-  //     "img": img,
-  //     "quantity": quantity,
-  //     "isExist": isExist,
-  //     "time": time
-  //   };
-  // }
+//coverting to json or string
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "price": price,
+      "img": img,
+      "quantity": quantity,
+      "isExist": isExist,
+      "time": time,
+      "product": product!.toJson(),
+    };
+  }
 }

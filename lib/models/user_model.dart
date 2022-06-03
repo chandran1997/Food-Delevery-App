@@ -1,17 +1,11 @@
-import 'dart:convert';
-
-RegisterResponseModel registerResponseModel(String str) =>
-    RegisterResponseModel.fromJson(json.decode(str));
-
-class RegisterResponseModel {
+class UserModel {
   String? msg;
   Payload? payload;
+  Payload? get userDetails => payload!;
 
-  Payload get details => payload!;
+  UserModel({this.msg, this.payload});
 
-  RegisterResponseModel({this.msg, this.payload});
-
-  RegisterResponseModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     payload =
         json['payload'] != null ? new Payload.fromJson(json['payload']) : null;
@@ -30,18 +24,21 @@ class RegisterResponseModel {
 class Payload {
   String? username;
   String? email;
+  String? createdAt;
 
-  Payload({this.username, this.email});
+  Payload({this.username, this.email, this.createdAt});
 
   Payload.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     email = json['email'];
+    createdAt = json['createdAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['username'] = this.username;
     data['email'] = this.email;
+    data['createdAt'] = this.createdAt;
     return data;
   }
 }

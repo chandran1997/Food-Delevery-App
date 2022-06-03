@@ -31,7 +31,7 @@ class RecommandedFoodDetails extends StatelessWidget {
         .initProduct(recommendedProduct, cartProvider);
     return Scaffold(
       body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
@@ -45,40 +45,39 @@ class RecommandedFoodDetails extends StatelessWidget {
                   },
                   child: AppIcon(icon: Icons.clear),
                 ),
-                Consumer<PopularProductProvider>(
-                    builder: (context, controller, child) {
-                  return Stack(
-                    children: [
-                      AppIcon(icon: Icons.shopping_cart_outlined),
-                      controller.totalItems >= 1
-                          ? Positioned(
-                              right: 0,
-                              top: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => const CartPages()));
-                                },
+                Consumer<CartProvider>(builder: (context, controller, child) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const CartPages()));
+                    },
+                    child: Stack(
+                      children: [
+                        AppIcon(icon: Icons.shopping_cart_outlined),
+                        controller.totalItems >= 1
+                            ? Positioned(
+                                right: 0,
+                                top: 0,
                                 child: AppIcon(
                                   icon: Icons.circle,
                                   size: 20,
                                   iconColor: Colors.transparent,
                                   backgroundColor: AppColors.maincolor,
+                                ))
+                            : Container(),
+                        controller.totalItems >= 1
+                            ? Positioned(
+                                right: 4,
+                                top: 4,
+                                child: BigText(
+                                  text: controller.totalItems.toString(),
+                                  size: 12,
+                                  color: Colors.white,
                                 ),
-                              ))
-                          : Container(),
-                      controller.totalItems >= 1
-                          ? Positioned(
-                              right: 4,
-                              top: 4,
-                              child: BigText(
-                                text: controller.totalItems.toString(),
-                                size: 12,
-                                color: Colors.white,
-                              ),
-                            )
-                          : Container()
-                    ],
+                              )
+                            : Container()
+                      ],
+                    ),
                   );
                 })
               ],

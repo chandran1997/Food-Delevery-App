@@ -7,15 +7,18 @@ import 'package:food_delevery_app/provider/popular_Product_Provider.dart';
 
 import '../Utilis/colors.dart';
 import '../models/popular_Product_Model.dart';
+import '../sharedPreference/cardPage_prefs.dart';
 
 class CartProvider extends ChangeNotifier {
   // PopularProductProvider popularProductProvider;
   // CartProvider({
   //   required this.popularProductProvider,
   // });
-
+  CardPrefs cardPrefs = CardPrefs();
   Map<int, CartModel> _items = {};
   Map<int, CartModel> get items => _items;
+
+  List<CartModel> storageItems = [];
 
   void addItem(PopularModel product, int quantity) {
     // print("length of the items is " + _items.length.toString());
@@ -62,8 +65,8 @@ class CartProvider extends ChangeNotifier {
           colorText: Colors.white,
         );
       }
-      throw Exception("could not get");
     }
+    cardPrefs.addToCardList(getItems);
     notifyListeners();
   }
 
@@ -112,5 +115,50 @@ class CartProvider extends ChangeNotifier {
     });
 
     return total;
+  }
+
+  List<CartModel> getCardData() {
+    setCart = cardPrefs.getCardList();
+    return storageItems;
+  }
+
+  set setCart(List<CartModel> items) {
+    storageItems = items;
+    print("Length of cart items " + storageItems.length.toString());
+    for (int i = 0; i < storageItems.length; i++) {
+      _items.putIfAbsent(
+        storageItems[i].product!.id!,
+        () => storageItems[i],
+      );
+    }
+  }
+
+  void addTocardHistory() {
+    cardPrefs.addToCartHistoryList();
+    clear();
+  }
+
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
+
+  List<CartModel> getCartHistoryList() {
+    return cardPrefs.getCartHistoryList();
+  }
+
+  set setItems(Map<int, CartModel> setItems) {
+    _items = {};
+    _items = setItems;
+  }
+
+  void addtoCardList() {
+    cardPrefs.addToCardList(getItems);
+    notifyListeners();
+  }
+
+  void clearCartHistory() {
+    cardPrefs.clearCartHistory();
+    notifyListeners();
   }
 }

@@ -21,16 +21,10 @@ class MainFoodPage extends StatefulWidget {
 
 class _MainFoodPageState extends State<MainFoodPage> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<SharedServices>(context, listen: false);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var sharedServices = Provider.of<SharedServices>(context);
     // print('height +${MediaQuery.of(context).size.height}');
     // print('width +${MediaQuery.of(context).size.width}');
+
     return Scaffold(
         body: Column(
       children: [
@@ -56,7 +50,7 @@ class _MainFoodPageState extends State<MainFoodPage> {
                           text: 'Naringdi',
                           color: Colors.black45,
                         ),
-                        Icon(Icons.arrow_drop_down_rounded)
+                       const Icon(Icons.arrow_drop_down_rounded)
                       ],
                     ),
                   ],
@@ -64,27 +58,25 @@ class _MainFoodPageState extends State<MainFoodPage> {
                 SizedBox(width: Dimensions.width20 * 8),
                 GestureDetector(
                   onTap: () {
-                    sharedServices.logout(context).then((value) {
+                    SharedServices.logout(context).then((value) {
                       print("SuccessFully Logout");
                       showCustomSnackBar("SuccessFully Logout",
                           title: "Success", background: AppColors.maincolor);
                     });
                   },
                   child: Center(
-                    child: Container(
-                      width: 45,
-                      height: 45,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius15),
-                          color: AppColors.maincolor),
-                      child: Icon(
-                        Icons.logout_sharp,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                      child: Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radius15),
+                              color: AppColors.maincolor),
+                          child: const Icon(
+                            Icons.logout_sharp,
+                            size: 20,
+                            color: Colors.white,
+                          ))),
                 ),
                 Center(
                   child: Container(
@@ -94,13 +86,13 @@ class _MainFoodPageState extends State<MainFoodPage> {
                         borderRadius:
                             BorderRadius.circular(Dimensions.radius15),
                         color: AppColors.maincolor),
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                       size: 20,
                       color: Colors.white,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

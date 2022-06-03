@@ -13,7 +13,7 @@ class LoginResponseModel {
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     payload =
-        json['payload'] != null ? new Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ?  Payload.fromJson(json['payload']) : null;
   }
 
   Map<String, dynamic> toJson() {
